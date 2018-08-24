@@ -379,6 +379,16 @@ Seeks to a specific location in the file.  This is an *absolute* seek.
  2              | `int64`           | Position to seek to, in microseconds
  Return         | `null` or `int64` | If the supplied position is invalid, `null` is returned, otherwise the position (in microseconds) is returned
 
+##### SetAlpha
+
+Sets the video transparency.
+
+   Params       |   Type            | Description
+:-------------: | ----------------- | ---------------------------
+ 1              | `string`          | Path (not currently used)
+ 2              | `int64`           | Transparency fro 0 to 255
+ Return         | `int64`           | The new transparency is returned
+
 ##### Mute
 
 Mute the audio stream.  If the volume is already muted, this does nothing.
