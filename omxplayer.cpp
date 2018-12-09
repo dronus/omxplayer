@@ -562,6 +562,7 @@ int main(int argc, char *argv[])
   const int native_deinterlace_opt = 0x20e;
   const int display_opt     = 0x20f;
   const int alpha_opt       = 0x210;
+  const int fade_in_opt     = 0x214;
   const int advanced_opt    = 0x211;
   const int aspect_mode_opt = 0x212;
   const int crop_opt        = 0x213;
@@ -626,6 +627,7 @@ int main(int argc, char *argv[])
     { "loop",         no_argument,        NULL,          loop_opt },
     { "layer",        required_argument,  NULL,          layer_opt },
     { "alpha",        required_argument,  NULL,          alpha_opt },
+    { "fade-in",      required_argument,  NULL,          fade_in_opt },
     { "display",      required_argument,  NULL,          display_opt },
     { "cookie",       required_argument,  NULL,          http_cookie_opt },
     { "user-agent",   required_argument,  NULL,          http_user_agent_opt },
@@ -889,6 +891,9 @@ int main(int argc, char *argv[])
         break;
       case alpha_opt:
         m_config_video.alpha = atoi(optarg);
+        break;
+      case fade_in_opt:
+        m_config_video.fade_in_time = atoi(optarg);
         break;
       case display_opt:
         m_config_video.display = atoi(optarg);

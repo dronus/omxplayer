@@ -63,6 +63,7 @@ public:
   int layer;
   float queue_size;
   float fifo_size;
+  int fade_in_time;
 
   OMXVideoConfig()
   {
@@ -81,6 +82,7 @@ public:
     layer = 0;
     queue_size = 10.0f;
     fifo_size = (float)80*1024*60 / (1024*1024);
+    fade_in_time=0;
   }
 };
 
