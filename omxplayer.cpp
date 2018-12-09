@@ -1464,6 +1464,9 @@ int main(int argc, char *argv[])
       case KeyConfig::ACTION_SET_LAYER:
           m_player_video.SetLayer(result.getArg());
           break;
+      case KeyConfig::ACTION_SET_LOOP:
+          m_loop=result.getArg();
+          break;
       case KeyConfig::ACTION_PLAY:
         m_Pause=false;
         //m_start_paused=false;
