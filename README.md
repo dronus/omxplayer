@@ -107,11 +107,13 @@ Usage: omxplayer [OPTIONS] [FILE]
         --key-config <file>     Uses key bindings in <file> instead of the default
         --alpha                 Set video transparency (0..255)
         --layer n               Set video render layer number (higher numbers are on top)
+        --drop-layer n          Drop video layer by one after n ms.
         --display n             Set display to output to
         --cookie 'cookie'       Send specified cookie as part of HTTP requests
         --user-agent 'ua'       Send specified User-Agent as part of HTTP requests
         --lavfdopts 'opts'      Options passed to libavformat, e.g. 'probesize:250000,...'
         --avdict 'opts'         Options passed to demuxer, e.g., 'rtsp_transport:tcp,...'
+
 
 For example:
 

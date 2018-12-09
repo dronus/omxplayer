@@ -114,6 +114,7 @@ bool              m_has_audio           = false;
 bool              m_has_subtitle        = false;
 bool              m_gen_log             = false;
 bool              m_loop                = false;
+int               m_drop_layer          = 0;
 
 enum{ERROR=-1,SUCCESS,ONEBYTE};
 
@@ -557,6 +558,7 @@ int main(int argc, char *argv[])
   const int dbus_name_opt   = 0x209;
   const int loop_opt        = 0x20a;
   const int layer_opt       = 0x20b;
+  const int drop_layer_opt  = 0x217;
   const int no_keys_opt     = 0x20c;
   const int anaglyph_opt    = 0x20d;
   const int native_deinterlace_opt = 0x20e;
@@ -625,6 +627,7 @@ int main(int argc, char *argv[])
     { "dbus_name",    required_argument,  NULL,          dbus_name_opt },
     { "loop",         no_argument,        NULL,          loop_opt },
     { "layer",        required_argument,  NULL,          layer_opt },
+    { "drop-layer",   required_argument,  NULL,          drop_layer_opt },
     { "alpha",        required_argument,  NULL,          alpha_opt },
     { "display",      required_argument,  NULL,          display_opt },
     { "cookie",       required_argument,  NULL,          http_cookie_opt },
@@ -886,6 +889,9 @@ int main(int argc, char *argv[])
         break;
       case layer_opt:
         m_config_video.layer = atoi(optarg);
+        break;
+      case drop_layer_opt:
+        m_drop_layer = atoi(optarg);
         break;
       case alpha_opt:
         m_config_video.alpha = atoi(optarg);
@@ -1199,6 +1205,14 @@ int main(int argc, char *argv[])
                                ? (OMXControlResult)(m_keyboard ? m_keyboard->getEvent() : KeyConfig::ACTION_BLANK)
                                : m_omxcontrol.getEvent();
        double oldPos, newPos;
+
+    if(m_drop_layer>0 && m_av_clock->OMXMediaTime()>m_drop_layer*1000.)
+    {
+      m_config_video.layer--;
+      printf("Dropping to layer %i!\n",m_config_video.layer);
+      m_player_video.SetLayer(m_config_video.layer);
+      m_drop_layer=0;
+    }
 
     switch(result.getKey())
     {
