@@ -108,6 +108,7 @@ Usage: omxplayer [OPTIONS] [FILE]
         --alpha                 Set video transparency (0..255)
         --fade-in               Fade in using transparency over time in ms (0..)
         --layer n               Set video render layer number (higher numbers are on top)
+        --drop-layer n          Drop video layer by one after n ms.
         --display n             Set display to output to
         --cookie 'cookie'       Send specified cookie as part of HTTP requests
         --user-agent 'ua'       Send specified User-Agent as part of HTTP requests
@@ -115,6 +116,7 @@ Usage: omxplayer [OPTIONS] [FILE]
         --avdict 'opts'         Options passed to demuxer, e.g., 'rtsp_transport:tcp,...'
         --start-paused          Immediately pause the video after loading, will wait for dbus or key command to play
         --end-paused            Pause the video on the last frame indefinitely
+
 
 For example:
 
