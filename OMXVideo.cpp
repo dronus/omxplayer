@@ -799,8 +799,11 @@ int COMXVideo::Decode(uint8_t *pData, int iSize, double dts, double pts)
     if(m_config.fade_in_time>0)
     {
       double a = 256. * (clock/1000.) / m_config.fade_in_time;
-      if(a<0) a=0;
-      if(a>255) a=255;
+      if(a<0.) a=0.;
+      if(a>255.) {
+        a=255.;
+        m_config.fade_in_time=0.; // prevent fade again on looping
+      }
       if(m_config.alpha!=(int)a)
       {
         printf("Fade to alpha: %f\n",a);
