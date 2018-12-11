@@ -114,6 +114,7 @@ bool              m_has_audio           = false;
 bool              m_has_subtitle        = false;
 bool              m_gen_log             = false;
 bool              m_loop                = false;
+int               m_fade_in_time        = 0;
 
 enum{ERROR=-1,SUCCESS,ONEBYTE};
 
@@ -893,7 +894,7 @@ int main(int argc, char *argv[])
         m_config_video.alpha = atoi(optarg);
         break;
       case fade_in_opt:
-        m_config_video.fade_in_time = atoi(optarg);
+        m_fade_in_time = atoi(optarg);
         break;
       case display_opt:
         m_config_video.display = atoi(optarg);
@@ -1204,6 +1205,21 @@ int main(int argc, char *argv[])
                                ? (OMXControlResult)(m_keyboard ? m_keyboard->getEvent() : KeyConfig::ACTION_BLANK)
                                : m_omxcontrol.getEvent();
        double oldPos, newPos;
+
+    // update fade, if appropriate
+    double clock=m_av_clock->OMXMediaTime();
+    if(m_fade_in_time>0)
+    {
+      double a = 256. * (clock/1000.) / m_fade_in_time;
+      if(a<0) a=0;
+      if(a>255) a=255;
+      if(m_config_video.alpha!=(int)a)
+      {
+        printf("Fade to alpha: %f\n",a);
+        m_config_video.alpha=(int)a;
+        m_player_video.SetAlpha(m_config_video.alpha);
+      }
+    }
 
     switch(result.getKey())
     {
