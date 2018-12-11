@@ -117,6 +117,7 @@ bool              m_loop                = false;
 bool              m_start_paused        = false;
 bool              m_end_paused          = false;
 int               m_drop_layer          = 0;
+int               m_fade_in_time        = 0;
 
 enum{ERROR=-1,SUCCESS,ONEBYTE};
 
@@ -911,7 +912,7 @@ int main(int argc, char *argv[])
         m_config_video.alpha = atoi(optarg);
         break;
       case fade_in_opt:
-        m_config_video.fade_in_time = atoi(optarg);
+        m_fade_in_time = atoi(optarg);
         break;
       case display_opt:
         m_config_video.display = atoi(optarg);
@@ -1223,12 +1224,28 @@ int main(int argc, char *argv[])
                                : m_omxcontrol.getEvent();
        double oldPos, newPos;
 
+    // drop layer, if wanted
     if(m_drop_layer>0 && m_av_clock->OMXMediaTime()>m_drop_layer*1000.)
     {
       m_config_video.layer--;
       printf("Dropping to layer %i!\n",m_config_video.layer);
       m_player_video.SetLayer(m_config_video.layer);
       m_drop_layer=0;
+    }
+
+    // update fade, if appropriate
+    double clock=m_av_clock->OMXMediaTime();
+    if(m_fade_in_time>0)
+    {
+      double a = 256. * (clock/1000.) / m_fade_in_time;
+      if(a<0) a=0;
+      if(a>255) a=255;
+      if(m_config_video.alpha!=(int)a)
+      {
+        printf("Fade to alpha: %f\n",a);
+        m_config_video.alpha=(int)a;
+        m_player_video.SetAlpha(m_config_video.alpha);
+      }
     }
 
     switch(result.getKey())
